@@ -1,0 +1,3 @@
+"0","componenteEstacional <- stl(IngresosPresupuestariosSuavizado, s.window=""periodic"")"
+"0","IngresosPresupuestariosDesestacionalizado <- seasadj(componenteEstacional)"
+"0","hchart(IngresosPresupuestariosDesestacionalizado, showInLegend = FALSE)"

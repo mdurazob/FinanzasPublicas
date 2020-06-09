@@ -1,0 +1,13 @@
+{
+    "path" : "~/Analisis1Simon",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        },
+        {
+            "ascending" : false,
+            "columnIndex" : 4
+        }
+    ]
+}

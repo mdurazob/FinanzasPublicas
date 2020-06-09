@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591321595638.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3840713947",
+    "id" : "1375EE48",
+    "lastKnownWriteTime" : 1591737803,
+    "last_content_update" : 1591737803630,
+    "path" : "~/Analisis1Simon/Enero2020.R",
+    "project_path" : "Enero2020.R",
+    "properties" : {
+        "cursorPosition" : "79,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

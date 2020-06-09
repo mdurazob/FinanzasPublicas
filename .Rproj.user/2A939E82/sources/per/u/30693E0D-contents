@@ -1,0 +1,10 @@
+# Retrieves
+
+costoDeLaDeudaNov2018 <- read.csv("./SituaciónFinanciera/noviembre2018SituacionFinanciera.csv")
+
+library(dplyr)
+
+costoDeuda <- costoDeuda$Monto, costoDeuda$Fecha
+costoDeLaDeudaNov2018 %>% select("X2018") %>% 
+  filter(costoDeLaDeudaNov2018$Concepto == "Costo financiero") %>%
+  add_row(.data, ..., .before = NULL, .after = NULL)

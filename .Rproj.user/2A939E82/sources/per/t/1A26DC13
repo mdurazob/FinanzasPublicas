@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591332452681.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3014359069",
+    "id" : "1A26DC13",
+    "lastKnownWriteTime" : 1591379123,
+    "last_content_update" : 1591379123861,
+    "path" : "~/Analisis1Simon/ExtraerDiciembre2019.R",
+    "project_path" : "ExtraerDiciembre2019.R",
+    "properties" : {
+        "cursorPosition" : "22,58",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

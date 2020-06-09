@@ -1,0 +1,2 @@
+USE analisiseconomico
+SELECT value FROM noviembre2018situacionfinanciera

@@ -1,0 +1,328 @@
+---
+title: "Indicadores de deuda e ingresos en las finanzas públicas mexicanas (2016-2020)"
+output:
+  rmarkdown::html_document:
+    theme: lumen
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Resúmen
+
+El siguiente documento pretende identificar las tendencias de los últimos años de los ingresos presupuestarios y costo financiero, complementariamente se buscará valorar el impacto de la pandemia en los pronósticos de cada una de estas variables. Estas acciones permitirán pronosticar escenarios futuros que arrojen luz sobre las consecuencias de tomar una dirección u otra en el manejo fiscal del país.
+
+
+El período seleccionado contiene 44 observaciones correspondientes a ingresos presupuestarios y costo financiero medidas en cada uno de los 44 meses que van desde octubre 2016 a abril de 2020.
+
+## Extracción de la información 
+Utilizando la información publicada en el reporte mensual de finanzas públicas de la SHCP fue posible extraer las tablas con los valores de las variables analizadas.
+
+Las variables de interés se encuentran en la página 4, 7, 70 y 72 del reporte. Este es un ejemplo de las páginas utilizadas para extraer la información del último reporte (Abril-2020)
+
+<iframe src="https://cdn.flipsnack.com/widget/v2/widget.html?hash=xpf6nc1wb1" width="100%" height="480" seamless="seamless" scrolling="no" frameBorder="0" allowFullScreen></iframe>
+
+Las tablas fueron extraídas con la librería py-tabula de Python utilizando el siguiente script, donde "reporteDescargado.pdf" corresponde al último reporte de finanzas públicas:
+```
+import tabula
+
+tabula.convert_into("reporteDescargado.pdf", "abril2020Resumen.tsv", output_format="tsv", pages='4', java_options="-Dfile.encoding=UTF8") ## Para extraer la tabla correspondiente al Resumen
+
+tabula.convert_into("reporteDescargado.pdf", "abril2020DeudaInterna.tsv",
+output_format="tsv", pages='70', area = [123.901,92.572,476.628,510.785], java_options="-Dfile.encoding=UTF8") # Para extraer la tabla correspondiente a la Deuda Interna
+
+tabula.convert_into("reporteDescargado.pdf", "abril2020DeudaExterna.tsv", output_format="tsv", pages='72', java_options="-Dfile.encoding=UTF8") # Para extraer la tabla correspondiente a la Deuda Externa
+
+tabula.convert_into("reporteDescargado.pdf", "abril2020SituacionFinanciera.tsv", output_format="tsv", pages='7', java_options="-Dfile.encoding=UTF8") # Para extraer la tabla correspondiente a la Situación Financiera
+```
+
+Las tablas extraídas contienen la siguiente información:
+
+### Situación financiera
+
+```{r}
+library(kableExtra)
+SituacionFinancieraTabla <- read.csv(file="SituacionFinanciera/abril2020SituacionFinanciera.csv")
+kable(SituacionFinancieraTabla) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, position = "left")) %>%
+  scroll_box(height = "200px")
+
+```
+
+### Deuda Interna
+
+```{r}
+library(kableExtra)
+DeudaInternaTabla <- read.csv(file="DeudaInterna/abril2020DeudaInterna.csv")
+kable(DeudaInternaTabla) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, position = "left")) %>%
+  scroll_box(height = "200px")
+
+```
+
+### Deuda Externa
+
+```{r}
+library(kableExtra)
+DeudaExternaTabla <- read.csv(file="DeudaExterna/abril2020DeudaExterna.csv")
+kable(DeudaExternaTabla) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", full_width = F, position = "left")) %>%
+  scroll_box(height = "200px")
+
+```
+
+Una vez que las tablas fueron extraídas de los 44 últimos reportes mensuales seleccionar nuestras variables de interés y generar las siguiente gráficas que muestran su evolución mensual alrededor del tiempo.
+
+## Ingresos Presupuestarios
+
+```{r}
+library(highcharter)
+library(readr)
+IngresosPresupuestariosDataset <- read_csv("IngresosPresupuestariosDataset.csv", 
+    col_types = cols(Fecha = col_date(format = "%m/%d/%Y")))
+
+hchart(IngresosPresupuestariosDataset, "line", hcaes(x = Fecha, y = IngresosPresupuestarios))
+
+```
+
+# Costo financiero de la deuda
+
+
+```{r}
+library(highcharter)
+library(readr)
+costoFinancieroDataset <- read_csv("costoFinancieroDataset.csv", 
+    col_types = cols(Fecha = col_date(format = "%d/%m/%Y")))
+
+hchart(costoFinancieroDataset, "line", hcaes(x = Mes, y = CostoFinanciero))
+
+```
+
+A simple vista podemos deducir que existe un componente estacional en cada una de estas variables. Este comportamiento cíclico es típico al tratar de medir variables económicas y financieras, por lo que es necesario desestacionalizar las variables para encontrar una tendencia real. Para verificar formalmente si las variables que estamos utilizando son o no estacionales primero debemos transformar nuestros datasets de cada una de ellas en uno de tipo "Time Series" usando la función "ts" del paquete "tseries"", 
+
+# Comportamiento de los Ingresos Presupuestarios
+
+El primer caso consistirá en transformar la información sobre Ingresos Presupuestarios a un objeto "timeseries". Es importante que el dataset que carguemos sea univariado, es decir, que contenga una ùnica columna con los valores medidos.
+
+```{r}
+library(tseries)
+IngresosPresupuestarios <- read_csv("IngresosPresupuestariosSerie.csv") 
+
+TSIngresosPresupuestarios <- ts(IngresosPresupuestarios, start = c(2016, 10), end = c(2020,4), frequency=12)
+
+```
+
+El siguiente paso es realizar el test de Dickey-Fuller. para ello usamos la función "adf.test" sobre la nueva variable tipo time series que creamos, la cual nos permitirá aplicar el test de Dickey-Fuller para verificar si existe estacionalidad en nuestros datos:
+```{r}
+
+
+TSIngresosPresupuestariosStationarityTest <- adf.test(TSIngresosPresupuestarios, alternative="stationary")
+
+TSIngresosPresupuestariosStationarityTest 
+
+```
+
+El test arrojó un valor-p de 0.351 el cual señala que la curva no es tan estacionaria como inicialmente se pensaba. Debido a ello es necesario suavizarla con medias móviles y volver a aplicar el test.
+
+
+## Curva de ingresos presupuestarios suavizada con medias móviles
+Un paso importante antes de desestacionalizar los datos es suavizar la curva original con medias móviles. La curva suavizada para los ingresos presupuestarios nos muestra una tendencia con un comportamiento menos estacional: la tendencia es decreciente durante todo el 2017 para iniciar una subsecuente recuperación hasta inicios de 2020 (cambiar color a rojo)
+```{r}
+library(astsa)
+library(stats)
+library(tseries)
+library(seasonal)
+library(forecast)
+library(highcharter)
+
+IngresosPresupuestariosSuavizado <- ma(TSIngresosPresupuestarios, order=2)
+IngresosPresupuestariosSuavizado <- na.omit(IngresosPresupuestariosSuavizado)
+hchart(IngresosPresupuestariosSuavizado) 
+
+
+TSIngresosPresupuestariosStationarityTest <- adf.test(IngresosPresupuestariosSuavizado, alternative="stationary")
+
+TSIngresosPresupuestariosStationarityTest 
+
+```
+
+Ahora con un valor p de 0.01 la curva suavizada con medias móviles sí presenta un componente estacional, por lo que procedemos a hacer la desestacionalización.
+
+Para desestacionalizar por completo utilizamos la función "seasadj" sobre el componente estacional de la curva suavizada.
+
+## Curva de ingresos presupuestarios desestacionalizada
+
+```{r}
+componenteEstacional <- stl(IngresosPresupuestariosSuavizado, s.window="periodic")
+IngresosPresupuestariosDesestacionalizado <- seasadj(componenteEstacional)
+hchart(IngresosPresupuestariosDesestacionalizado)
+```
+
+## Pruebas de robustez del modelo
+
+Una vez que la información fue desestacionalizada podemos ver que hay una tendencia decreciente en los ingresos presupuestarios a partir de diciembre de 2019. Esta información nos permite pronosticar qué pasará los próximos 12 meses
+
+```{r echo = T, results = 'hide'}
+atributosSarima <- sarima(IngresosPresupuestariosDesestacionalizado, 0, 1, 1, 1, 1, 0, 12)
+atributosSarima
+```
+
+Nuestro valor-p se mantiene bajo bara los próximos 12 meses, los residuos se distribuyen aleatoriamente alrededor del cero.
+
+## Pronóstico de los ingresos presupuestarios para los próximos 12 meses
+
+El pronóstico para los siguientes 12 meses, una vez que verificamos que nuestro modelo es robusto es el siguiente:
+
+```{r}
+fit <- arima(IngresosPresupuestariosDesestacionalizado, order=c(0,1,1),seasonal = list(order = c(1,1,0), period = 12),method="ML")
+prediccion1 <- forecast(fit, h=12)
+
+hchart(prediccion1)
+```
+
+
+## Pronósitico para los próximos 12 meses omitiendo los meses de pandemia
+
+El siguiente es el pronóstico de los ingresos presupuestarios omitiendo los últimos meses correspondientes a la pandemia
+```{r}
+library(dplyr)
+IngresosPresupuestariosSinPandemia <- IngresosPresupuestarios %>% slice(-c(42,43))
+
+TSIngresosPresupuestariosSinPandemia <- ts(IngresosPresupuestariosSinPandemia, start = c(2016, 10), end = c(2020,2), frequency=12)
+IngresosPresupuestariosSinPandemiaSuavizado <- ma(TSIngresosPresupuestariosSinPandemia, order=2)
+IngresosPresupuestariosSinPandemiaSuavizado <- na.omit(IngresosPresupuestariosSinPandemiaSuavizado)
+
+componenteEstacional <- stl(IngresosPresupuestariosSinPandemiaSuavizado, s.window="periodic")
+IngresosPresupuestariosSinPandemiaDesestacionalizado <- seasadj(componenteEstacional)
+
+
+fit <- arima(IngresosPresupuestariosSinPandemiaDesestacionalizado, order=c(0,1,1),seasonal = list(order = c(1,1,0), period = 12),method="ML")
+prediccionIngresosSinPandemia <- forecast(fit, h=14)
+
+hchart(prediccionIngresosSinPandemia)
+```
+
+Cuando se omiten los meses correspondientes a la pandemia el pronóstico arroja valores que superan los 500k, niveles mucho más altos de los que el modelo que el modelo pronosticaba sí incluía a los meses con pandemia. Se pronósticaba tener ingresos mayores, pero al incluir los datos correspondientes a marzo y abril, el pronóstico revela un panorama más austero.
+```{r}
+library(readr)
+PrediccionesSuperpuestasIngresos <- read_csv("PrediccionesSuperpuestasIngresos.csv", 
+    col_types = cols(Fecha = col_date(format = "%d/%m/%Y")))
+
+library(plotly)
+
+IngresosSuperpuestosCon <- PrediccionesSuperpuestasIngresos[which(PrediccionesSuperpuestasIngresos$Estatus == "Con Pandemia"),]
+density1 <- density(IngresosSuperpuestosCon$Valor)
+
+IngresosSuperpuestosSin <- PrediccionesSuperpuestasIngresos[which(PrediccionesSuperpuestasIngresos$Estatus == "Sin Pandemia"),]
+density2 <- density(IngresosSuperpuestosSin$Valor)
+
+fig <- plot_ly(x = ~density1$x, y = ~density1$y, type = 'scatter', mode = 'lines', name = 'Predicción con pandemia', fill = 'tozeroy')
+fig <- fig %>% add_trace(x = ~density2$x, y = ~density2$y, name = 'Predicción sin pandemia', fill = 'tozeroy')
+fig <- fig %>% layout(xaxis = list(title = 'Ingresos Presupuestarios'),
+         yaxis = list(title = 'Densidad'))
+
+fig
+```
+
+
+# Comportamiento del Costo financiero
+
+Para el caso del costo financiero haremos el mismo procedimiento, primero habrá que transformar la información sobre éste a un objeto "time-series". Es importante que el dataset que carguemos sea univariado, es decir, que contenga únicamente una columna con los valores medidos".
+
+```{r}
+library(tseries)
+library(readr)
+CostoFinanciero <- read_csv("CostoFinancieroSerie.csv", 
+    col_types = cols(CostoFinanciero = col_number()))
+TSCostoFinanciero <- ts(CostoFinanciero, start = c(2016, 10), end = c(2020,4), frequency=12)
+```
+Ahora hacemos el test usando la función "adf.test" sobre la nueva variable tipo time series que creamos la cual nos permitirá aplicar el test de Dickey-Fuller para verificar si existe estacionalidad:
+```{r}
+
+TSCostoFinancieroStationarityTest <- adf.test(TSCostoFinanciero, alternative="stationary")
+
+TSCostoFinancieroStationarityTest 
+
+```
+
+El test arroja un valor p de 0.01 por lo que podemos afirmar que el costo financiero ha tenido un comportamiento estacional desde octubre de 2016 a abril 2020, ahora tenemos que desestacionalizar la información para poder identificar una tendencia que nos permita pronosticar los valores futuros. La curva de costo financiero de la deuda desestacionalizada presenta una tendencia ascendiente.
+
+```{r}
+CostoFinancieroSuavizado <- ma(TSCostoFinanciero, order=2)
+CostoFinancieroSuavizado <- na.omit(CostoFinancieroSuavizado)
+hchart(CostoFinancieroSuavizado) 
+```
+
+## Costo financiero desestacionalizado
+
+```{r}
+componenteEstacionalCostoFinanciero <- stl(CostoFinancieroSuavizado, s.window="periodic")
+CostoFinancieroDesestacionalizado <- seasadj(componenteEstacionalCostoFinanciero)
+hchart(CostoFinancieroDesestacionalizado)
+```
+
+## Pronósitico del costo financiero para los próximos 12 meses
+
+A diferencia del pronósitco de los ingresos tributarios, el del costo financiero revela un patrón ascendente los próximos 12 meses
+```{r}
+fitcf <- arima(CostoFinancieroDesestacionalizado, order=c(0,1,1),seasonal = list(order = c(1,1,0), period = 12),method="ML")
+prediccioncf <- forecast(fitcf, h=12)
+
+hchart(prediccioncf)
+```
+
+## Pronósitico para los próximos 12 meses omitiendo los meses de pandemia
+
+
+El pronóstico cuando se omiten los dos últimos meses correspondientes a la pandemia muestra un comportamiento distinto al caso en donde sí se toman en cuenta. En el escenario que omite los dos últimos meses, los valores pronosticados son relativamente menores y con una tendencia distinta. 
+
+
+
+```{r}
+library(dplyr)
+CostoFinancieroSinPandemia <- CostoFinanciero %>% slice(-c(42,43))
+
+TSCostoFinancieroSinPandemia <- ts(CostoFinancieroSinPandemia, start = c(2016, 10), end = c(2020,2), frequency=12)
+CostoFinancieroSinPandemiaSuavizado <- ma(TSCostoFinancieroSinPandemia, order=2)
+CostoFinancieroSinPandemiaSuavizado <- na.omit(CostoFinancieroSinPandemiaSuavizado)
+
+componenteEstacional <- stl(CostoFinancieroSinPandemiaSuavizado, s.window="periodic")
+CostoFinancieroSinPandemiaDesestacionalizado <- seasadj(componenteEstacional)
+
+fit <- arima(CostoFinancieroSinPandemiaDesestacionalizado, order=c(0,1,1),seasonal = list(order = c(1,1,0), period = 12),method="ML")
+prediccionIngresosSinPandemia <- forecast(fit, h=14)
+
+hchart(prediccionIngresosSinPandemia)
+```
+
+```{r}
+library(readr)
+PrediccionesSuperpuestasCostoFinanciero <- read_csv("PrediccionesSuperpuestasCostoFinanciero.csv", 
+    col_types = cols(Fecha = col_date(format = "%d/%m/%Y")))
+
+library(plotly)
+
+CostoFinancieroSuperpuestosCon <- PrediccionesSuperpuestasCostoFinanciero[which(PrediccionesSuperpuestasCostoFinanciero$Estatus == "Con Pandemia"),]
+density1 <- density(CostoFinancieroSuperpuestosCon$Valor)
+
+CostoFinancieroSuperpuestosSin <- PrediccionesSuperpuestasCostoFinanciero[which(PrediccionesSuperpuestasCostoFinanciero$Estatus == "Sin Pandemia"),]
+density2 <- density(CostoFinancieroSuperpuestosSin$Valor)
+
+fig <- plot_ly(x = ~density1$x, y = ~density1$y, type = 'scatter', mode = 'lines', name = 'Predicción con pandemia', fill = 'tozeroy')
+fig <- fig %>% add_trace(x = ~density2$x, y = ~density2$y, name = 'Predicción sin pandemia', fill = 'tozeroy')
+fig <- fig %>% layout(xaxis = list(title = 'Costo Financiero'),
+         yaxis = list(title = 'Densidad'))
+
+fig
+```
+
+
+
+# Hallazgos
+
+Las predicciones realizadas al incluir u omitir los últimos dos meses que corresponden a pandemia difieren en la magnitud de sus valores. El hecho de incluir los meses de marzo y abril de 2020 en el modelo arroja un panorama más desolador para las finanzas públicas. 
+
+Por otra parte, cuando utilizamos la información que no omite los últimos meses podemos darnos cuenta que hay una tendencia ascendente en el costo financiero mientras que los ingresos permanecen estables, en el mejor casos. 
+
+Es necesario mantener el análisis periódico de esta informaciòn para diseñar un sistema de alerta temprana que nos permita tener un acceso oportuno a la magnitud y las consecuencias de las variaciones en el costo financiero, ya que estas pueden perjudicar la balanza pública, las inversiones y el crecimiento del país.

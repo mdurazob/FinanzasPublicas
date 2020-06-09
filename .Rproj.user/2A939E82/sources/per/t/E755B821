@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591559889778.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1537899837",
+    "id" : "E755B821",
+    "lastKnownWriteTime" : 1591563898,
+    "last_content_update" : 1591563898410,
+    "path" : "~/Analisis1Simon/PrediccionCostoFinanciero.R",
+    "project_path" : "PrediccionCostoFinanciero.R",
+    "properties" : {
+        "cursorPosition" : "133,44",
+        "scrollLine" : "0",
+        "tempName" : "Untitled2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

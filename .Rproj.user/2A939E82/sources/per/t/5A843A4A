@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591245104734.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5A843A4A",
+    "lastKnownWriteTime" : 3548067076488918113,
+    "last_content_update" : 1591245104734,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "84A5C319",
+        "caption" : "clenaed",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=clenaed&cache_key=84A5C319",
+        "displayedObservations" : 20,
+        "environment" : "",
+        "expression" : "clenaed",
+        "object" : "clenaed",
+        "preview" : 0,
+        "totalObservations" : 20,
+        "variables" : 7
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

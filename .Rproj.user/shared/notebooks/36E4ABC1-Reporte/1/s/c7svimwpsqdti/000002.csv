@@ -1,0 +1,9 @@
+"0","library(tseries)"
+"0","IngresosPresupuestarios <- read_csv(""IngresosPresupuestariosSerie.csv"") "
+"2","Parsed with column specification:
+cols(
+  IngresosPresupuestarios = [32mcol_double()[39m
+)
+"
+"0","TSIngresosPresupuestarios <- ts(IngresosPresupuestarios, start = c(2016, 10), end = c(2020,4), frequency=12)"
+"0",""

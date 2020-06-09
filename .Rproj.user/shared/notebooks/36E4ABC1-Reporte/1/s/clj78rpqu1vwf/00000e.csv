@@ -1,0 +1,6 @@
+"0","library(highcharter)"
+"0","library(readr)"
+"0","IngresosPresupuestariosDataset <- read_csv(""IngresosPresupuestariosDataset.csv"", "
+"0","    col_types = cols(Fecha = col_date(format = ""%m/%d/%Y"")))"
+"0",""
+"0","hchart(IngresosPresupuestariosDataset, ""line"", hcaes(x = Fecha, y = IngresosPresupuestarios))"

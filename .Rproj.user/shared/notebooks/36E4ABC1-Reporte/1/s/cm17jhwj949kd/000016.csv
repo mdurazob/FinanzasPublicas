@@ -1,0 +1,6 @@
+"0","library(highcharter)"
+"0","library(readr)"
+"0","costoFinancieroDataset <- read_csv(""costoFinancieroDataset.csv"", "
+"0","    col_types = cols(Fecha = col_date(format = ""%d/%m/%Y"")))"
+"2","The following named parsers don't match the column names: Fecha"
+"0","hchart(costoFinancieroDataset, ""line"", hcaes(x = Mes, y = CostoFinanciero))"

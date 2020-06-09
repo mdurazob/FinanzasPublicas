@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591376516613.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "BC191B55",
+    "lastKnownWriteTime" : 7287422521248397858,
+    "last_content_update" : 1591376516613,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "A2444808",
+        "caption" : "marzo2020DeudaExterna",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=marzo2020DeudaExterna&cache_key=A2444808",
+        "displayedObservations" : 13,
+        "environment" : "",
+        "expression" : "marzo2020DeudaExterna",
+        "object" : "marzo2020DeudaExterna",
+        "preview" : 0,
+        "totalObservations" : 13,
+        "variables" : 5
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 12,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

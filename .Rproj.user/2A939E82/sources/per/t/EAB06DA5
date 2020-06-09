@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591383486593.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EAB06DA5",
+    "lastKnownWriteTime" : 2494651068936,
+    "last_content_update" : 1591383486593,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "8C7F5C4C",
+        "caption" : "agosto2019SituacionFinanciera",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=agosto2019SituacionFinanciera&cache_key=8C7F5C4C",
+        "displayedObservations" : 42,
+        "environment" : "",
+        "expression" : "agosto2019SituacionFinanciera",
+        "object" : "agosto2019SituacionFinanciera",
+        "preview" : 0,
+        "totalObservations" : 42,
+        "variables" : 25
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 14,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

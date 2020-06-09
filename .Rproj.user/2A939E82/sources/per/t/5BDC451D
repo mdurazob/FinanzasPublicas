@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591664815340.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5BDC451D",
+    "lastKnownWriteTime" : 2011846129632,
+    "last_content_update" : 1591664815340,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "B135BB2E",
+        "caption" : "IngresosPresupuestarios",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=IngresosPresupuestarios&cache_key=B135BB2E",
+        "displayedObservations" : 43,
+        "environment" : "",
+        "expression" : "IngresosPresupuestarios",
+        "object" : "IngresosPresupuestarios",
+        "preview" : 0,
+        "totalObservations" : 43,
+        "variables" : 1
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 18,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

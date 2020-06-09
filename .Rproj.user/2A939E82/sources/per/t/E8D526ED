@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1591244263853.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E8D526ED",
+    "lastKnownWriteTime" : 1591242902,
+    "last_content_update" : 1591244263853,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "AE76537A",
+        "caption" : "abril2020",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=abril2020&cache_key=AE76537A",
+        "displayedObservations" : 25,
+        "environment" : "",
+        "expression" : "abril2020",
+        "object" : "abril2020",
+        "preview" : 0,
+        "totalObservations" : 25,
+        "variables" : 7
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 9,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}
