@@ -2,7 +2,7 @@
 title: "Indicadores de deuda e ingresos en las finanzas públicas mexicanas (2016-2020)"
 output:
   rmarkdown::html_document:
-    theme: lumen
+    theme: flatly
 ---
 
 ```{r setup, include=FALSE}
